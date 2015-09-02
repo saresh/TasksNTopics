@@ -1,0 +1,5 @@
+com\saresh\tnt\entity\User.class
+com\saresh\tnt\entity\Task.class
+com\saresh\tnt\entity\TaskFile.class
+com\saresh\tnt\entity\Role.class
+com\saresh\tnt\entity\Topic.class
