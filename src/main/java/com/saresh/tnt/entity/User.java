@@ -4,13 +4,40 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
 public class User {
-	private int id;
+	@Id
+    @GeneratedValue(generator="increment")
+    @GenericGenerator(name="increment", strategy = "increment")
+	private int id;	
+	
     private String login;
     private String password;
     private boolean enabled;
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
     private List<Topic> topicsCreated;
+    
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "usersAssigned")
     private List<Topic> topicsAssigned;
+    
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = { 
+			@JoinColumn(name = "userId", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "roleId", 
+					nullable = false, updatable = false) })
     private Set<Role> userRoles = new HashSet<Role>(0);
     
 	public int getId() {
